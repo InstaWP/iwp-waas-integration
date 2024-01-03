@@ -147,11 +147,11 @@ if ( ! class_exists( 'InstaWP_WaaS_Integration' ) ) {
             $settings['tabs'] = [
                 [
                     'id'    => 'settings_tab',
-                    'title' => __( 'Settings' ),
+                    'title' => __( 'Settings', 'iwp-waas-integration' ),
                 ],
                 [
                     'id'    => 'email_tab',
-                    'title' => __( 'Email' ),
+                    'title' => __( 'Email', 'iwp-waas-integration' ),
                 ],
             ];
 
@@ -164,13 +164,13 @@ if ( ! class_exists( 'InstaWP_WaaS_Integration' ) ) {
                     'fields'        => [
                         [
                             'id'      => 'api_key',
-                            'title'   => 'API Key',
-                            'desc'    => 'Enter InstaWP API Key here.',
+                            'title'   => __( 'API Key', 'iwp-waas-integration' ),
+                            'desc'    => __( 'Enter InstaWP API Key here.', 'iwp-waas-integration' ),
                             'type'    => 'text',
                         ],
                         [
                             'id'      => 'app_email',
-                            'title'   => 'Send email through App',
+                            'title'   => __( 'Send email through App', 'iwp-waas-integration' ),
                             'type'    => 'toggle',
                             'default' => false,
                         ],
@@ -187,13 +187,13 @@ if ( ! class_exists( 'InstaWP_WaaS_Integration' ) ) {
                     'fields'        => [
                         [
                             'id'      => 'subject',
-                            'title'   => 'Subject',
+                            'title'   => __( 'Email Subject', 'iwp-waas-integration' ),
                             'type'    => 'text',
                             'default' => 'Your InstaWP WaaS link',
                         ],
                         [
                             'id'      => 'body',
-                            'title'   => 'Subject',
+                            'title'   => __( 'Email Body', 'iwp-waas-integration' ),
                             'type'    => 'editor',
                             'default' => 'Link to build your website is {{link}}',
                         ],

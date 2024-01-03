@@ -1,12 +1,11 @@
 <?php
 
-use SureCart\Models\Product;
 use SureCart\Integrations\IntegrationService;
 use SureCart\Integrations\Contracts\IntegrationInterface;
 use SureCart\Integrations\Contracts\PurchaseSyncInterface;
 
 /**
- * Controls the LearnDash integration.
+ * Controls the InstaWP WaaS integration.
  */
 if ( ! class_exists( 'InstaWP_WaaS_SureCart_Integration' ) ) {
 	
