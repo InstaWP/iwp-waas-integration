@@ -220,7 +220,7 @@ if ( ! class_exists( 'InstaWP_WaaS_Integration' ) ) {
                 return $cached;
             }
 
-            $response = wp_remote_get( 'https://stage.instawp.io/api/v2/waas', [
+            $response = wp_remote_get( 'https://app.instawp.io/api/v2/waas', [
                 'sslverify' => false,
                 'headers'   => [
                     'Content-Type'  => 'application/json',

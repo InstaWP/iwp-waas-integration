@@ -32,7 +32,10 @@ https://www.youtube.com/watch?v=Dh0EjpKNs2Q
 == Changelog ==
 
 = 1.0.1 =
+
 * Added Updater
+* Fix Production URL
 
 = 1.0.0 =
+
 * Initial Release
