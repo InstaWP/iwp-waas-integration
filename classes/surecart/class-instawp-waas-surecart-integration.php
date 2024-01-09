@@ -139,17 +139,22 @@ if ( ! class_exists( 'InstaWP_WaaS_SureCart_Integration' ) ) {
 				return;
 			}
 
+			$args = [
+				'name'  => $wp_user->display_name,
+				'email' => $wp_user->user_email,
+			];
+
+			if ( wpsf_get_setting( 'iwp_waas_integration', 'settings_tab_settings', 'app_email' ) ) {
+				$args['send_email'] = true;
+			}
+
 			$response = wp_remote_post( $api_url, [
 				'sslverify' => false,
 				'headers'   => [
 					'Authorization' => 'Bearer ' . $api_key,
 					'Content-Type'  => 'application/json'
 				], 
-				'body'           => wp_json_encode( [
-					'name'       => $wp_user->display_name,
-					'email'      => $wp_user->user_email,
-					'send_email' => wpsf_get_setting( 'iwp_waas_integration', 'settings_tab_settings', 'app_email' ),
-				] ),
+				'body'      => wp_json_encode( $args ),
 			] );
 	
 			if ( is_wp_error( $response ) ) {

@@ -2,7 +2,7 @@
 /**
  * Plugin Name: InstaWP WaaS Integration
  * Description: Integration with WooCommerce & SureCart for InstaWP WaaS Feature
- * Version:     1.0.0
+ * Version:     1.0.1
  * Author:      InstaWP
  * Author URI:  https://instawp.com
  * License:     GPL-2.0-or-later
@@ -32,7 +32,7 @@ if ( ! class_exists( 'InstaWP_WaaS_Integration' ) ) {
 		 *
 		 * @var string
 		 */
-		public $version = '1.0.0';
+		public $version = '1.0.1';
 
         /**
 		 * Settings Group.
@@ -76,10 +76,14 @@ if ( ! class_exists( 'InstaWP_WaaS_Integration' ) ) {
 		public function __construct() {
             $this->define_constants();
 
+            require_once INSTAWP_WAAS_WC_PATH . 'plugin-update-checker/plugin-update-checker.php';
             require_once INSTAWP_WAAS_WC_PATH . 'settings/wp-settings-framework.php';
 
             add_filter( 'wpsf_register_settings_' . $this->settings_group, [ $this, 'settings' ] );
             $this->wpsf = new WordPressSettingsFramework( null, $this->settings_group );
+
+            $updateChecker = \YahnisElsts\PluginUpdateChecker\v5\PucFactory::buildUpdateChecker( 'https://github.com/InstaWP/iwp-waas-integration', INSTAWP_WAAS_WC_FILE, 'iwp-waas-integration' );
+            $updateChecker->setBranch( 'main' );
 
             add_action( 'admin_menu', [ $this, 'register_menu' ], 20 ); 
             add_action( 'plugins_loaded', [ $this, 'surecart_integration_class' ], 9 );

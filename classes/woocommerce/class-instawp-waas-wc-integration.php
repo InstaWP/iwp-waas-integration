@@ -80,6 +80,14 @@ if ( ! class_exists( 'InstaWP_WaaS_WC_Integration' ) ) {
             foreach ( $order->get_items() as $item_id => $item ) {
                 $waas_id = get_post_meta( $item->get_product_id(), 'instawp_wc_waas', true );
                 $api_url = instawp_waas()->get_field_value( $waas_id, 'webhookUrl', $this->get_option( 'api_key' ) );
+                $args    = [
+                    'name'  => $order->get_billing_first_name() . ' ' . $order->get_billing_last_name(),
+                    'email' => $order->get_billing_email(),
+                ];
+
+                if ( 'yes' === $this->get_option( 'app_email', 'no' ) ) {
+                    $args['send_email'] = true;
+                }
 
                 if ( $waas_id && $api_url ) {
                     $response = wp_remote_post( $api_url, [
@@ -88,11 +96,7 @@ if ( ! class_exists( 'InstaWP_WaaS_WC_Integration' ) ) {
                             'Authorization' => 'Bearer ' . $this->get_option( 'api_key' ),
                             'Content-Type'  => 'application/json'
                         ], 
-                        'body'      => wp_json_encode( [
-                            'name'       => $order->get_billing_first_name() . ' ' . $order->get_billing_last_name(),
-                            'email'      => $order->get_billing_email(),
-                            'send_email' => 'yes' === $this->get_option( 'app_email', 'no' ),
-                        ] ),
+                        'body'      => wp_json_encode( $args ),
                     ] );
             
                     if ( is_wp_error( $response ) ) {
