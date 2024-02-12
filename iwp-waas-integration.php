@@ -86,7 +86,7 @@ if ( ! class_exists( 'InstaWP_WaaS_Integration' ) ) {
             $updateChecker->setBranch( 'main' );
 
             add_action( 'admin_menu', [ $this, 'register_menu' ], 20 ); 
-            add_action( 'plugins_loaded', [ $this, 'surecart_integration_class' ], 9 );
+            add_action( 'plugins_loaded', [ $this, 'register_classes' ], 9 );
             add_action( 'woocommerce_integrations_init', [ $this, 'wc_integration_class' ] );
             add_filter( 'woocommerce_integrations', [ $this, 'wc_integrations' ], 999 );
             add_filter( 'woocommerce_email_classes', [ $this, 'wc_email_classes' ], 999 );
@@ -102,9 +102,14 @@ if ( ! class_exists( 'InstaWP_WaaS_Integration' ) ) {
             define( 'INSTAWP_WAAS_WC_URL', plugins_url( '', INSTAWP_WAAS_WC_FILE ) . '/' );
         }
 
-        public function surecart_integration_class() {
+        public function register_classes() {
             if ( class_exists( 'SureCart' ) ) {
                 require_once INSTAWP_WAAS_WC_PATH . 'classes/surecart/class-instawp-waas-surecart-integration.php';
+            }
+
+            if ( function_exists( 'EDD' ) ) {
+                require_once INSTAWP_WAAS_WC_PATH . 'classes/easy-digital-downloads/class-instawp-edd-integration.php';
+                new InstaWP_WaaS_EDD_Integration();
             }
         }
 

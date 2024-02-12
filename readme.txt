@@ -31,6 +31,10 @@ https://www.youtube.com/watch?v=Dh0EjpKNs2Q
 
 == Changelog ==
 
+= 1.0.2 =
+
+* Added Easy Digital Downloads Support.
+
 = 1.0.1 =
 
 * Added Updater
