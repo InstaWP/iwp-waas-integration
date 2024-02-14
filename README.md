@@ -8,6 +8,12 @@ Please follow these steps
 
 https://www.youtube.com/watch?v=sxpVqExRelk
 
+## Easy Digital Downloads
+
+Please follow these steps
+
+https://www.youtube.com/watch?v=b7KTyQbWzFU
+
 ## SureCart 
 
 Please follow these steps
