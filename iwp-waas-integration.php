@@ -220,12 +220,7 @@ if ( ! class_exists( 'InstaWP_WaaS_Integration' ) ) {
         }
 
         public function fetch_waas_list( $api_key ) {
-            $cached = get_transient( 'iwp_waas_api_data' );
-            if ( $cached ) {
-                return $cached;
-            }
-
-            $response = wp_remote_get( 'https://app.instawp.io/api/v2/waas', [
+            $response = wp_remote_get( 'https://stage.instawp.io/api/v2/waas', [
                 'sslverify' => false,
                 'headers'   => [
                     'Content-Type'  => 'application/json',
@@ -250,7 +245,6 @@ if ( ! class_exists( 'InstaWP_WaaS_Integration' ) ) {
             foreach ( $data['data'] as $item ) {
                 $options[ $item['id'] ] = $item;
             }
-            set_transient( 'iwp_waas_api_data', $options, 12 * HOUR_IN_SECONDS );
 
             return $options;
         }

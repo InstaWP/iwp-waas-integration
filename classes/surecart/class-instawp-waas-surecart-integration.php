@@ -77,7 +77,7 @@ if ( ! class_exists( 'InstaWP_WaaS_SureCart_Integration' ) ) {
 		}
 
 		public function getItems( $items = [], $search = '' ) {
-			$options = instawp_waas()->fetch_waas_list( $this->get_api_key() );
+			$options = $this->get_waas_list();
 
 			foreach ( $options as $item ) {
 				$items[] = [
@@ -96,7 +96,7 @@ if ( ! class_exists( 'InstaWP_WaaS_SureCart_Integration' ) ) {
 		}
 
 		public function getItem( $waas_id ) {
-			$options = instawp_waas()->fetch_waas_list( $this->get_api_key() );
+			$options = $this->get_waas_list();
 			$item    = [
 				'id'    => $waas_id,
 				'label' => 'Not found'
@@ -118,6 +118,18 @@ if ( ! class_exists( 'InstaWP_WaaS_SureCart_Integration' ) ) {
 
 		public function get_email_option( $key ) {
 			return wpsf_get_setting( 'iwp_waas_integration', 'email_tab_email', $key );
+		}
+
+		public function get_waas_list() {
+			$cached = get_transient( 'iwp_waas_api_data' );
+            if ( $cached && ! empty( $cached ) ) {
+                return $cached;
+            }
+
+			$options = instawp_waas()->fetch_waas_list( $this->get_api_key() );
+			set_transient( 'iwp_waas_api_data', $options, 300 );
+
+			return $options;
 		}
 
 		/**
