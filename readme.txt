@@ -20,13 +20,19 @@ Please note that this will create a unique WaaS Link for your customers when an 
 
 Please follow these steps
 
-https://www.youtube.com/watch?v=sxpVqExRelk
+[https://www.youtube.com/watch?v=sxpVqExRelk](https://www.youtube.com/watch?v=sxpVqExRelk)
+
+## Easy Digital Downloads
+
+Please follow these steps
+
+[https://www.youtube.com/watch?v=b7KTyQbWzFU](https://www.youtube.com/watch?v=b7KTyQbWzFU)
 
 ## SureCart 
 
 Please follow these steps
 
-https://www.youtube.com/watch?v=Dh0EjpKNs2Q
+[https://www.youtube.com/watch?v=Dh0EjpKNs2Q](https://www.youtube.com/watch?v=Dh0EjpKNs2Q)
 
 
 == Changelog ==
