@@ -2,8 +2,8 @@
 Contributors: instawp, infosatech
 Tags: instawp, waas, staging
 Requires at least: 5.4
-Tested up to: 6.4
-Stable tag: 1.0.2
+Tested up to: 6.5
+Stable tag: 1.0.3
 Requires PHP: 7.0
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
@@ -36,6 +36,10 @@ Please follow these steps
 
 
 == Changelog ==
+
+= 1.0.3 =
+
+* Fixed SureCart email not sending.
 
 = 1.0.2 =
 

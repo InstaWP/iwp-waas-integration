@@ -2,7 +2,7 @@
 /**
  * Plugin Name: InstaWP WaaS Integration
  * Description: Integration with WooCommerce & SureCart for InstaWP WaaS Feature
- * Version:     1.0.2
+ * Version:     1.0.3
  * Author:      InstaWP
  * Author URI:  https://instawp.com
  * License:     GPL-2.0-or-later
@@ -21,7 +21,7 @@ defined( 'ABSPATH' ) || exit;
 if ( ! class_exists( 'InstaWP_WaaS_Integration' ) ) {
 
 	/**
-	 * Gutena Lightbox class.
+	 * InstaWP WaaS class.
 	 *
 	 * @class Main class of the plugin.
 	 */
@@ -32,7 +32,7 @@ if ( ! class_exists( 'InstaWP_WaaS_Integration' ) ) {
 		 *
 		 * @var string
 		 */
-		public $version = '1.0.2';
+		public $version = '1.0.3';
 
         /**
 		 * Settings Group.
@@ -86,7 +86,7 @@ if ( ! class_exists( 'InstaWP_WaaS_Integration' ) ) {
             $updateChecker->setBranch( 'main' );
 
             add_action( 'admin_menu', [ $this, 'register_menu' ], 20 ); 
-            add_action( 'plugins_loaded', [ $this, 'register_classes' ], 9 );
+            add_action( 'plugins_loaded', [ $this, 'register_classes' ], 11 );
             add_action( 'woocommerce_integrations_init', [ $this, 'wc_integration_class' ] );
             add_filter( 'woocommerce_integrations', [ $this, 'wc_integrations' ], 999 );
             add_filter( 'woocommerce_email_classes', [ $this, 'wc_email_classes' ], 999 );

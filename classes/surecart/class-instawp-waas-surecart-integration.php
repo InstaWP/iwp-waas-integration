@@ -142,7 +142,7 @@ if ( ! class_exists( 'InstaWP_WaaS_SureCart_Integration' ) ) {
 		 */
 		public function onPurchaseCreated( $integration, $wp_user ) {
 			$api_key = $this->get_api_key();
-			if ( empty( $api_key ) || empty( $integration->integration_id ) || wpsf_get_setting( 'iwp_waas_integration', 'settings_tab_settings', 'app_email' ) ) {
+			if ( empty( $api_key ) || empty( $integration->integration_id ) ) {
 				return;
 			}
 
@@ -156,7 +156,8 @@ if ( ! class_exists( 'InstaWP_WaaS_SureCart_Integration' ) ) {
 				'email' => $wp_user->user_email,
 			];
 
-			if ( wpsf_get_setting( 'iwp_waas_integration', 'settings_tab_settings', 'app_email' ) ) {
+			$send_app_email = wpsf_get_setting( 'iwp_waas_integration', 'settings_tab_settings', 'app_email' );
+			if ( $send_app_email ) {
 				$args['send_email'] = true;
 			}
 
@@ -171,7 +172,7 @@ if ( ! class_exists( 'InstaWP_WaaS_SureCart_Integration' ) ) {
 	
 			if ( is_wp_error( $response ) ) {
 				error_log( 'error is: '. $response->get_error_message() );
-			} else {
+			} elseif ( ! $send_app_email ) {
 				$body = wp_remote_retrieve_body( $response );
 				$data = json_decode( $body );
 
