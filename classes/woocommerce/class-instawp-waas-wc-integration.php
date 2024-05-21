@@ -28,6 +28,8 @@ if ( ! class_exists( 'InstaWP_WaaS_WC_Integration' ) ) {
             add_action( 'woocommerce_process_product_meta', [ $this, 'save_field' ] );
             add_filter( 'woocommerce_email_enabled_instawp_waas', [ $this, 'is_enabled' ], 999 );
             add_filter( 'woocommerce_email_additional_content_instawp_waas', [ $this, 'email_additional_content' ], 99, 3 );
+
+            add_shortcode( 'instawp_waas_wc_links', [ $this, 'waas_wc_links' ] );
         }
 
         /**
@@ -76,6 +78,7 @@ if ( ! class_exists( 'InstaWP_WaaS_WC_Integration' ) ) {
 
             $content   = 'None';
             $link_data = [];
+            $links     = [];
 
             foreach ( $order->get_items() as $item_id => $item ) {
                 $waas_id = get_post_meta( $item->get_product_id(), 'instawp_wc_waas', true );
@@ -106,7 +109,8 @@ if ( ! class_exists( 'InstaWP_WaaS_WC_Integration' ) ) {
                         $data = json_decode( $body );
 
                         if ( $data->status && ! empty( $data->data->unique_link ) ) {
-                            $link_data[] = sprintf( 'WaaS InstaWP Unique Link for %s: %s', $item->get_name(), $data->data->unique_link );
+                            $link_data[] = sprintf( 'InstaWP WaaS Unique Link for %s: %s', $item->get_name(), $data->data->unique_link );
+                            $links[]     = $data->data->unique_link;
                         }
                     }
                 }
@@ -114,6 +118,11 @@ if ( ! class_exists( 'InstaWP_WaaS_WC_Integration' ) ) {
 
             if ( ! empty( $link_data ) ) {
                 $content = '<p>' . join( '</p><p>', $link_data ) . '</p>';
+            }
+
+            if ( ! empty( $links ) ) {
+                $order->update_meta_data( 'instawp_waas_links', $links );
+                $order->save();
             }
 
             return str_replace( '{waas_list}', $content, $formatted_additional_content );
@@ -140,5 +149,24 @@ if ( ! class_exists( 'InstaWP_WaaS_WC_Integration' ) ) {
 
             return $options;
         }
+
+        public function waas_wc_links( $atts ) {
+			$atts = shortcode_atts( [
+                'order_id' => 0,
+            ], $atts, 'instawp_waas_wc_links' );
+
+            if ( empty( $atts['order_id'] ) ) {
+                return 'Order ID missing.';
+            }
+
+            $order = wc_get_order( $atts['order_id'] );
+            if ( ! is_a( $order, 'WC_Order' ) ) {
+                return 'Order ID is incorrect.';
+            }
+
+            $links = $order->get_meta( 'instawp_waas_links', true );
+
+            return join( ', ', $links );
+		}
     }
 }
