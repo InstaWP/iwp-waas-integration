@@ -3,7 +3,7 @@ Contributors: instawp, infosatech
 Tags: instawp, waas, staging
 Requires at least: 5.4
 Tested up to: 6.5
-Stable tag: 1.0.3
+Stable tag: 1.0.4
 Requires PHP: 7.0
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
@@ -37,18 +37,27 @@ Please follow these steps
 
 == Changelog ==
 
+= 1.0.4 =
+
+* Added: Auto cancel subscription if order is cancelled in WooCommerce.
+* Added: Auto cancel subscription if order is revoked in Easy Digital Downloads.
+* Added: Auto cancel subscription if order items are revoked individually in SureCart.
+* Added: Shortcode for WooCommerce -> `[instawp_waas_wc_links order_id="2"]`.
+* Fixed: Email not sending if Send from app option is checked in WooCommerce.
+* Fixed: Email not working in Easy Digital Downloads.
+
 = 1.0.3 =
 
-* Fixed SureCart email not sending.
+* Fixed: SureCart email not sending.
 
 = 1.0.2 =
 
-* Added Easy Digital Downloads Support.
+* Added: Easy Digital Downloads Support.
 
 = 1.0.1 =
 
-* Added Updater
-* Fix Production URL
+* Added: Updater
+* Fixed: Production URL
 
 = 1.0.0 =
 

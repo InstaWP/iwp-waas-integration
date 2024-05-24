@@ -2,7 +2,7 @@
 /**
  * Plugin Name: InstaWP WaaS Integration
  * Description: Integration with WooCommerce & SureCart for InstaWP WaaS Feature
- * Version:     1.0.3
+ * Version:     1.0.4
  * Author:      InstaWP
  * Author URI:  https://instawp.com
  * License:     GPL-2.0-or-later
@@ -32,7 +32,7 @@ if ( ! class_exists( 'InstaWP_WaaS_Integration' ) ) {
 		 *
 		 * @var string
 		 */
-		public $version = '1.0.3';
+		public $version = '1.0.4';
 
         /**
 		 * Settings Group.
@@ -100,6 +100,7 @@ if ( ! class_exists( 'InstaWP_WaaS_Integration' ) ) {
             define( 'INSTAWP_WAAS_WC_FILE', __FILE__ );
             define( 'INSTAWP_WAAS_WC_PATH', dirname( INSTAWP_WAAS_WC_FILE ) . '/' );
             define( 'INSTAWP_WAAS_WC_URL', plugins_url( '', INSTAWP_WAAS_WC_FILE ) . '/' );
+            define( 'INSTAWP_WAAS_API_DOMAIN', 'https://app.instawp.io' );
         }
 
         public function register_classes() {
@@ -220,7 +221,7 @@ if ( ! class_exists( 'InstaWP_WaaS_Integration' ) ) {
         }
 
         public function fetch_waas_list( $api_key ) {
-            $response = wp_remote_get( 'https://app.instawp.io/api/v2/waas', [
+            $response = wp_remote_get( INSTAWP_WAAS_API_DOMAIN . '/api/v2/waas', [
                 'sslverify' => false,
                 'headers'   => [
                     'Content-Type'  => 'application/json',

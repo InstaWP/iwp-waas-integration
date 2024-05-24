@@ -1,5 +1,6 @@
 <?php
 
+use SureCart\Models\Purchase;
 use SureCart\Integrations\IntegrationService;
 use SureCart\Integrations\Contracts\IntegrationInterface;
 use SureCart\Integrations\Contracts\PurchaseSyncInterface;
@@ -133,12 +134,12 @@ if ( ! class_exists( 'InstaWP_WaaS_SureCart_Integration' ) ) {
 		}
 
 		/**
-		 * Add the role when the purchase is created.
+		 * Create InstaWP WaaS Link when the purchase is created.
 		 *
 		 * @param \SureCart\Models\Integration $integration The integrations.
 		 * @param \WP_User                     $wp_user The user.
 		 *
-		 * @return boolean|void Returns true if the user course access updation was successful otherwise false.
+		 * @return void
 		 */
 		public function onPurchaseCreated( $integration, $wp_user ) {
 			$api_key = $this->get_api_key();
@@ -150,6 +151,12 @@ if ( ! class_exists( 'InstaWP_WaaS_SureCart_Integration' ) ) {
 			if ( ! $api_url ) {
 				return;
 			}
+
+			if ( empty( $this->getPurchaseId() ) ) {
+				return;
+			}
+
+			$purchase = Purchase::with( [ 'order', 'invoice' ] )->find( $this->getPurchaseId() );
 
 			$args = [
 				'name'  => $wp_user->display_name,
@@ -176,8 +183,17 @@ if ( ! class_exists( 'InstaWP_WaaS_SureCart_Integration' ) ) {
 				$body = wp_remote_retrieve_body( $response );
 				$data = json_decode( $body );
 
-				if ( $data->status && ! empty( $data->data->unique_link ) ) {
-					$link = $data->data->unique_link;
+				if ( $data->status ) {
+					$link_ids = get_user_meta( $wp_user->ID, 'instawp_waas_surecart_link_ids', true );
+					$link_ids = empty( $link_ids ) ? [] : $link_ids;
+
+					$link_ids[ $purchase->id ] = $data->data->cancel_link;
+
+					update_user_meta( $wp_user->ID, 'instawp_waas_surecart_link_ids', $link_ids );
+
+					if ( ! $send_app_email ) {
+						$link = $data->data->unique_link;
+					}
 				}
 			}
 
@@ -186,20 +202,63 @@ if ( ! class_exists( 'InstaWP_WaaS_SureCart_Integration' ) ) {
 				$email_body    = $this->get_email_option( 'body' ) ?? __( 'Link to build your website is {{link}}: ', 'iwp-waas-integration' ) . $link;
 				$email_body    = str_replace( '{{link}}', $link, $email_body );
 
-				wp_mail( $wp_user->user_email , $email_subject, $email_body, [ 'Content-Type: text/html; charset=UTF-8' ] );
+				wp_mail( $wp_user->user_email, $email_subject, $email_body, [ 'Content-Type: text/html; charset=UTF-8' ] );
 			}
 		}
 
 		/**
-		 * Add the role when the purchase is invoked
+		 * Create InstaWP WaaS Link when the purchase is invoked.
+		 *
+		 * @param \SureCart\Models\Integration $integration The integrations.
+		 * @param \WP_User                     $wp_user The user.
+		 *
+		 * @return void
+		 */
+		public function onPurchaseInvoked( $integration, $wp_user ) {
+			$this->onPurchaseCreated( $integration, $wp_user );
+		}
+
+		/**
+		 * Delete InstaWP WaaS Link when the purchase is revoked.
 		 *
 		 * @param \SureCart\Models\Integration $integration The integrations.
 		 * @param \WP_User                     $wp_user The user.
 		 *
 		 * @return boolean|void Returns true if the user course access updation was successful otherwise false.
 		 */
-		public function onPurchaseInvoked( $integration, $wp_user ) {
-			$this->onPurchaseCreated( $integration, $wp_user );
+		public function onPurchaseRevoked( $integration, $wp_user ) {
+			$api_key = $this->get_api_key();
+			if ( empty( $api_key ) || empty( $integration->integration_id ) ) {
+				return;
+			}
+
+			if ( empty( $this->getPurchaseId() ) ) {
+				return;
+			}
+
+			$purchase = Purchase::with( [ 'order', 'invoice' ] )->find( $this->getPurchaseId() );
+			$link_ids = get_user_meta( $wp_user->ID, 'instawp_waas_surecart_link_ids', true );
+
+			if ( empty( $link_ids ) || ! isset( $link_ids[ $purchase->id ] ) ) {
+				return;
+			}
+
+			$response = wp_remote_request( $link_ids[ $purchase->id ], [
+				'method'    => 'DELETE',
+				'sslverify' => false,
+				'headers'   => [
+					'Authorization' => 'Bearer ' . $api_key,
+					'Content-Type'  => 'application/json'
+				],
+			] );
+	
+			unset( $link_ids[ $purchase->id ] );
+
+			if ( ! empty( $link_ids ) ) {
+				update_user_meta( $wp_user->ID, 'instawp_waas_surecart_link_ids', $link_ids );
+			} else {
+				delete_user_meta( $wp_user->ID, 'instawp_waas_surecart_link_ids' );
+			}
 		}
 	}
 }
