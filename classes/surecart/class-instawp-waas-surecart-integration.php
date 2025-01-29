@@ -269,7 +269,7 @@ if ( ! class_exists( 'InstaWP_WaaS_SureCart_Integration' ) ) {
 			}
 
 			$this->storeCancelLink( $purchase, $data, $wp_user );
-			
+
 			$link = $data->data->unique_link;
 			if ( ! empty( $link ) ) {
 				$this->sendCustomEmail( $wp_user, $link );
@@ -402,7 +402,7 @@ if ( ! class_exists( 'InstaWP_WaaS_SureCart_Integration' ) ) {
 			$key     = 'instawp_waas_surecart_send_email_' . $user_id . '_' . $integration_id;
 			$is_sent = (bool) get_transient( $key );
 			if ( ! $is_sent ) {
-				set_transient( $key, true, 5 );
+				set_transient( $key, true, 6 );
 			}
 
 			return $is_sent;
