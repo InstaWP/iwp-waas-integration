@@ -100,9 +100,15 @@ if ( ! class_exists( 'InstaWP_WaaS_Integration' ) ) {
             define( 'INSTAWP_WAAS_WC_FILE', __FILE__ );
             define( 'INSTAWP_WAAS_WC_PATH', dirname( INSTAWP_WAAS_WC_FILE ) . '/' );
             define( 'INSTAWP_WAAS_WC_URL', plugins_url( '', INSTAWP_WAAS_WC_FILE ) . '/' );
-            define( 'INSTAWP_WAAS_API_DOMAIN', 'https://app.instawp.io' );
+
+            if ( ! defined( 'INSTAWP_WAAS_API_DOMAIN' ) ) {
+                define( 'INSTAWP_WAAS_API_DOMAIN', 'https://app.instawp.io' );
+            }
         }
 
+        /**
+         * Register the classes.
+         */
         public function register_classes() {
             if ( class_exists( 'SureCart' ) ) {
                 require_once INSTAWP_WAAS_WC_PATH . 'classes/surecart/class-instawp-waas-surecart-integration.php';
@@ -142,6 +148,9 @@ if ( ! class_exists( 'InstaWP_WaaS_Integration' ) ) {
             return $emails;
         }
 
+        /**
+         * Register the menu.
+         */
         public function register_menu() {
             if ( class_exists( 'SureCart' ) ) {
                 $this->wpsf->add_settings_page( [
@@ -153,6 +162,12 @@ if ( ! class_exists( 'InstaWP_WaaS_Integration' ) ) {
             }
         }
 
+        /**
+         * Register the settings.
+         * 
+         * @param array $settings Settings.
+         * @return array
+         */
         public function settings( $settings ) {
             $settings['tabs'] = [
                 [
@@ -214,12 +229,26 @@ if ( ! class_exists( 'InstaWP_WaaS_Integration' ) ) {
             return $settings;
         }
 
+        /**
+         * Get the field value.
+         * 
+         * @param string $id ID.
+         * @param string $field Field.
+         * @param string $api_key API Key.
+         * @return string
+         */
         public function get_field_value( $id, $field, $api_key ) {
             $items = $this->fetch_waas_list( $api_key );
 
             return $items[ $id ][ $field ] ?? '';
         }
 
+        /**
+         * Fetch the waas list.
+         * 
+         * @param string $api_key API Key.
+         * @return array
+         */
         public function fetch_waas_list( $api_key ) {
             $response = wp_remote_get( INSTAWP_WAAS_API_DOMAIN . '/api/v2/waas', [
                 'sslverify' => false,
