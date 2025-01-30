@@ -156,7 +156,7 @@ if ( ! class_exists( 'InstaWP_WaaS_Integration' ) ) {
          */
         public function declare_compatibility() {
             if ( class_exists( \Automattic\WooCommerce\Utilities\FeaturesUtil::class ) ) {
-                \Automattic\WooCommerce\Utilities\FeaturesUtil::declare_compatibility( 'custom_order_tables', UPIWC_FILE, true );
+                \Automattic\WooCommerce\Utilities\FeaturesUtil::declare_compatibility( 'custom_order_tables', INSTAWP_WAAS_WC_FILE, true );
             }
         }
 
