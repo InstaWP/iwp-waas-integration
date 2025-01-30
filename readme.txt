@@ -2,8 +2,8 @@
 Contributors: instawp, infosatech
 Tags: instawp, waas, staging
 Requires at least: 5.4
-Tested up to: 6.5
-Stable tag: 1.0.4
+Tested up to: 6.7
+Stable tag: 1.0.5
 Requires PHP: 7.0
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
@@ -36,6 +36,16 @@ Please follow these steps
 
 
 == Changelog ==
+
+= 1.0.5 =
+
+* Added: WooCommerce HOPS compatibility.
+* Fixed: Refactor SureCart integration.
+* Fixed: Don't sent multiple emails in SureCart even if SureCart's method is called multiple times.
+* Compatibility: WooCommerce 9.6.
+* Compatibility: Easy Digital Downloads 3.3.
+* Compatibility: SureCart 3.3.
+* Compatibility: WordPress 6.7.
 
 = 1.0.4 =
 

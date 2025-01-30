@@ -2,12 +2,14 @@
 /**
  * Plugin Name: InstaWP WaaS Integration
  * Description: Integration with WooCommerce & SureCart for InstaWP WaaS Feature
- * Version:     1.0.4
+ * Version:     1.0.5
  * Author:      InstaWP
  * Author URI:  https://instawp.com
  * License:     GPL-2.0-or-later
  * License URI: https://www.gnu.org/licenses/gpl-2.0.html
  * Text Domain: iwp-waas-integration    
+ * WC requires at least: 3.1
+ * WC tested up to: 9.6
  *
  * @package iwp-waas-integration
  * @author  Sayan Datta
@@ -32,7 +34,7 @@ if ( ! class_exists( 'InstaWP_WaaS_Integration' ) ) {
 		 *
 		 * @var string
 		 */
-		public $version = '1.0.4';
+		public $version = '1.0.5';
 
         /**
 		 * Settings Group.
@@ -87,6 +89,7 @@ if ( ! class_exists( 'InstaWP_WaaS_Integration' ) ) {
 
             add_action( 'admin_menu', [ $this, 'register_menu' ], 20 ); 
             add_action( 'plugins_loaded', [ $this, 'register_classes' ], 11 );
+            add_action( 'before_woocommerce_init', [ $this, 'declare_compatibility' ] );
             add_action( 'woocommerce_integrations_init', [ $this, 'wc_integration_class' ] );
             add_filter( 'woocommerce_integrations', [ $this, 'wc_integrations' ], 999 );
             add_filter( 'woocommerce_email_classes', [ $this, 'wc_email_classes' ], 999 );
@@ -146,6 +149,15 @@ if ( ! class_exists( 'InstaWP_WaaS_Integration' ) ) {
             $emails['InstaWP_WaaS_WC_Email'] = include_once INSTAWP_WAAS_WC_PATH . 'classes/woocommerce/class-instawp-waas-wc-email.php';
             
             return $emails;
+        }
+
+        /**
+         * Declaring HPOS compatibility
+         */
+        public function declare_compatibility() {
+            if ( class_exists( \Automattic\WooCommerce\Utilities\FeaturesUtil::class ) ) {
+                \Automattic\WooCommerce\Utilities\FeaturesUtil::declare_compatibility( 'custom_order_tables', UPIWC_FILE, true );
+            }
         }
 
         /**
