@@ -1,3 +1,7 @@
+> [!NOTE]
+> This plugins is going to be deprecated in favor of the new unified plugin for complete InstaWP Integration. Checkout the new repository at https://github.com/InstaWP/iwp-wp-integration 
+
+
 Using this WordPress plugin you can integrate WaaS with various checkout plugins like WooCommerce and Surecart.
 
 Please note that this will create a unique WaaS Link for your customers when an order is placed via these checkout plugins, it will auto provision the website via the WaaS. To do that we are going to open our API soon. 
