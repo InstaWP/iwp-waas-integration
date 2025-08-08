@@ -1,5 +1,5 @@
 > [!NOTE]
-> This plugins is going to be deprecated in favor of the new unified plugin for complete InstaWP Integration. Checkout the new repository at https://github.com/InstaWP/iwp-wp-integration 
+> This plugin is going to be deprecated in favor of the new unified plugin for complete InstaWP Integration. Checkout the new repository at https://github.com/InstaWP/iwp-wp-integration 
 
 
 Using this WordPress plugin you can integrate WaaS with various checkout plugins like WooCommerce and Surecart.
